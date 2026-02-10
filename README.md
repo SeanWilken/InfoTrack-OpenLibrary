@@ -30,6 +30,50 @@ On the server side, dependency injection is used to register the discovery servi
 3.) Client receives and displays the ranked results to the user.
 
 ---
+---
+
+# Project Structure:
+
+src
+    |-Client - Client application
+    |    * Files of Note:
+    |        - Index.fs: Has the main view that is shown to the end user. This is using Fable and Feliz for the way we create components.
+    |        - App.fs: configures and runs the application and loads the side effect for the styles.
+    |
+    |-Shared - Houses types that can be referenced and safely shared between the client and the server.
+    |    * Files of Note:
+    |        - Shared.fs: Has the types that are used as requests for Fable remoting front and backend communication (Client <-> Server)
+    | 
+    |-Server - Handles requests from client application, responsible for communicating with OpenAI API, Google Gemini API and OpenLibrary, processing and ranking the results with a grounded perspective based in logic, so cannot be hallucinated.
+    |    AI/
+    |       ChatGPT/
+    |        - ChatGPTExtractor.fs: Houses type for communicating with OpenAI API, parsing the results and handling responses from their API based on status codes, with retry attempts and back off. 
+    |       Gemini/
+    |        - GeminiExtractor.fs: Houses type for communicating with Google Gemini API, parsing the results and handling responses from their API based on status codes, with retry attempts and back off. 
+    |   - AiConfig.fs: Gathers the required information from .env variables to generate the options for interacting with the AI API.
+    |   - ExtrationParsing.fs: Centralize some logic for parsing the Json API response.
+    |   - ExtractorFactory.fs: Tries to parse results, and calls fallback extractor if primary parser fails for it's AI Json response.
+    |   - FallbackExtractor.fs: Default fallback logic.
+    |    Application/
+    |       - Dicovery.fs: Heart of the logic and pipeline for handling the request and obligations for the requirements in one place.
+    |    Core/
+    |       - OpenLibraryCanonicalize.fs: Handling creatig records from OpenLibrary responses into a cohesive shape. 
+    |       - OpenLibraryClient.fs: In charge of communication with OpenLibrary API
+    |    Domain/
+    |       - Domain.fs: Types used by the server internally and communicating with OpenLibrary.
+    |    Endpoints/
+    |       Discovery/
+    |           - LibraryDiscovery.fs: Api for creating api with the webApp of the server (handles routing for us) see Server.fs.
+    |           - LibraryDiscoveryService.fs: Interface contract used for the implementation on the server and client.
+    |           - LibraryDiscoveryServiceImpl.fs: Server implementation calling the Application/Discovery.fs function to run the pipeline.
+    |    Utils/
+    |       - Http.fs: Helper function to be reused foo OpenAI and Google API retries with backoff, improvement would be use for openlibrary as well.
+    |       - JsonExtractor.fs: Centralized helper functions for handling Json.
+    |       - Normalize.fs: Nommralization helper functions when working with raw text.
+    |    - Server.fs.fs: Configuration of the backend application. Uses Dependency Injection for the Http clients, adds singletons for factories to support the extraction and the service for handling discovery.
+
+
+---
 
 ## .env configuration
 
