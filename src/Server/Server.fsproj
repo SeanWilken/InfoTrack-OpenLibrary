@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="paket.references" />
+    <Compile Include="Utils\Http.fs" />
+    <Compile Include="Utils\Normalize.fs" />
+    <Compile Include="Domain\Domain.fs" />
+    <Compile Include="Utils\JsonExtractor.fs" />
+    <Compile Include="AI\AIConfig.fs" />
+    <Compile Include="AI\ExtractionParsing.fs" />
+    <Compile Include="AI\QueryExtractor.fs" />
+    <Compile Include="AI\ChatGPT\ChatGPTExtractor.fs" />
+    <Compile Include="AI\Gemini\GeminiExtractor.fs" />
+    <Compile Include="AI\FallbackExtractor.fs" />
+    <Compile Include="AI\ExtractorFactory.fs" />
+    <Compile Include="Core\OpenLibraryClient.fs" />
+    <Compile Include="Application\Discovery.fs" />
+    <Compile Include="Endpoints\Discovery\LibraryDiscoveryService.fs" />
+    <Compile Include="Endpoints\Discovery\LibraryDiscoveryServiceImpl.fs" />
+    <Compile Include="Endpoints\Discovery\LibraryDiscovery.fs" />
+    <Compile Include="Core\OpenLibraryCanonicalize.fs" />
+    <Compile Include="Server.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.fsproj" />
+  </ItemGroup>
+  <Import Project="..\..\.paket\Paket.Restore.targets" />
+</Project>
